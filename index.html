@@ -4,8 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will it explode today?</title>
-    <link rel="stylesheet" href="index.css">
-    <script src="fetch.js" defer></script>
+    
+    <style>
+
+        exploded {
+
+    background-image: url(explosion.png);
+
+}
+
+#center {
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+#explosionInformation {
+
+    margin-top: 100px;
+
+}
+
+button {
+
+    display: block;
+    margin: 0 auto; 
+    margin-top: 20px;
+
+}
+
+h1, h2{
+
+    text-align: center;
+
+}
+
+#explosionCounter {
+
+    color: red;
+
+}
+
+#defuseCounter {
+
+    color: greenyellow;
+
+}
+
+button:disabled {
+
+    opacity: 0.3;
+
+}
+
+    </style>
+
 </head>
 <body>
 
@@ -36,6 +92,88 @@
     </div>
 
     </div>
+
+    <script>
+
+
+function fetchStats() {
+fetch('/api/stats')
+.then((response) => response.json())
+.then((result) => {
+
+    const timeLeft = document.getElementById('timeLeft');
+
+    const minutes = Math.floor(result.timeLeft / 60);
+    const seconds = Math.floor(result.timeLeft % 60).toString().padStart(2, '0');
+
+    const formattedTime = `${minutes}:${seconds}`
+    timeLeft.textContent = formattedTime;
+
+    const explosionCounter = document.getElementById('explosionCounter');
+    explosionCounter.textContent = result.explosionCounter;
+
+    const extendButton = document.getElementById('extendButton');
+    const reduceButton = document.getElementById('reduceButton');
+
+    extendButton.disabled = result.timerActive;
+    reduceButton.disabled = result.timerActive;
+
+});
+}
+
+fetchStats();
+
+setInterval(fetchStats, 1000);
+
+function extendTimer() {    
+
+fetch('/api/extend-timer', {method: 'POST'})
+.then((response) => response.json())
+.then((result) => {
+
+    const timeLeft = document.getElementById('timeLeft');
+
+    const minutes = Math.floor(result.timeLeft / 60);
+    const seconds = Math.floor(result.timeLeft % 60).toString().padStart(2, '0');
+
+    const formattedTime = `${minutes}:${seconds}`
+    timeLeft.textContent = formattedTime;
+
+});
+}
+
+document.getElementById("extendButton").addEventListener("click", extendTimer);
+
+function reduceTimer() {    
+
+fetch('/api/reduce-timer', {method: 'POST'})
+.then((response) => response.json())
+.then((result) => {
+
+    const timeLeft = document.getElementById('timeLeft');
+
+    const minutes = Math.floor(result.timeLeft / 60);
+    const seconds = Math.floor(result.timeLeft % 60).toString().padStart(2, '0');
+
+    const formattedTime = `${minutes}:${seconds}`
+    timeLeft.textContent = formattedTime;
+
+});
+}
+
+document.getElementById("reduceButton").addEventListener("click", reduceTimer);
+
+fetch('/api/explosion-counter')
+.then((response) => response.json())
+.then((result) => {
+
+    const timeLeft = document.getElementById('explosionCounter');
+
+    timeLeft.textContent = result.explosionCounter;
+
+});
+
+    </script>
     
 </body>
 </html>

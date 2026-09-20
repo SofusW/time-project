@@ -2,11 +2,12 @@ const express = require('express');
 
 const app = express();
 
+/*
 const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+*/
 
 app.get('/', (req, res) => {
 
@@ -36,7 +37,7 @@ app.get('/api/stats', (req, res) => {
 setInterval( () => {
     
     let currentTime = new Date();
-    let timerStart = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 1, 30); 
+    let timerStart = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30); 
     let timerEnd = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 11, 45);
 
     if(currentTime > timerStart && currentTime < timerEnd && !hasExplodedToday) {
