@@ -37,8 +37,9 @@ app.get('/api/stats', (req, res) => {
 setInterval( () => {
     
     let currentTime = new Date();
-    let timerStart = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30); 
-    let timerEnd = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 11, 45);
+ 
+    let timerStart = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 6, 30); 
+    let timerEnd = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 9, 45);
 
     if(currentTime > timerStart && currentTime < timerEnd && !hasExplodedToday) {
         timerActive = true;
